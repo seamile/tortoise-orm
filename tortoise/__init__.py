@@ -6,7 +6,7 @@ import warnings
 from copy import deepcopy
 from inspect import isclass
 from types import ModuleType
-from typing import Coroutine, Dict, Iterable, List, Optional, Tuple, Type, Union, cast
+from typing import Any, Coroutine, Dict, Iterable, List, Optional, Tuple, Type, Union, cast
 
 from pypika import Table
 
@@ -664,7 +664,7 @@ class Tortoise:
         os.environ["TIMEZONE"] = timezone
 
 
-def run_async(coro: Coroutine) -> None:
+def run_async(coro: Coroutine) -> Any:
     """
     Simple async runner that cleans up DB connections on exit.
     This is meant for simple scripts.
@@ -685,7 +685,7 @@ def run_async(coro: Coroutine) -> None:
     """
     loop = asyncio.get_event_loop()
     try:
-        loop.run_until_complete(coro)
+        return loop.run_until_complete(coro)
     finally:
         loop.run_until_complete(connections.close_all(discard=True))
 
